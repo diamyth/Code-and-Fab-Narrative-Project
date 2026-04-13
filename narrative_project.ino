@@ -13,7 +13,8 @@ const int suitUpSwitch = 11;
 const int sunSwitch = 10;
 const int seaSwitch = 9;
 
-const int sunLed = 4;
+const int sunLedRed = 5;
+const int sunLedGreen = 3;
 
 int minosSwitchState = 0;
 int tableSwitchState = 0;
@@ -26,9 +27,10 @@ void setup() {
   servo1.attach(8);
   servo2.attach(7);
   servo3.attach(6);
-  servo4.attach(5);
+  servo4.attach(4);
 
-  pinMode(sunLed, OUTPUT);
+  pinMode(sunLedRed, OUTPUT);
+  pinMode(sunLedGreen, OUTPUT);
 
   pinMode(minosSwitch, INPUT);
   pinMode(tableSwitch, INPUT);
@@ -47,29 +49,50 @@ void loop() {
 
   // tower
   if (minosSwitchState == HIGH) {
-    for (int i = 0; i <= 180; i++) {
-      servo1.write(i);
-    }
+      servo1.write(180);
   }
   if (minosSwitchState == LOW) {
-    for (int i = 180; i >= 0; i--)
-      servo1.write(i);
+      servo1.write(0);
   }
 
   // workbench
   int tableVal;
   if (tableSwitchState == HIGH) {
-    tableVal = 90;
+    tableVal = 100;
   }
   if (tableSwitchState == LOW) {
-    tableVal = 0;
+    tableVal = 90;
   }
   servo2.write(tableVal);
   delay(15);
 
   // suit up
+if (suitUpSwitchState == HIGH) {
+  servo3.write(165);
+}
+if (suitUpSwitchState == LOW) {
+  servo3.write(180);
+}
 
   // flying
+if (sunSwitchState == HIGH) {
+  digitalWrite(sunLedRed, 255);
+  digitalWrite(sunLedGreen, 255);
+}
+
+if (sunSwitchState == LOW) {
+  digitalWrite(sunLedRed, 0);
+  digitalWrite(sunLedGreen, 0);
+}
 
   // falling
+  int seaVal;
+  if (seaSwitchState == HIGH) {
+    seaVal = 80;
+  }
+  if (seaSwitchState == LOW) {
+    seaVal = 90;
+  }
+  servo4.write(seaVal);
+  delay(15);
 }
